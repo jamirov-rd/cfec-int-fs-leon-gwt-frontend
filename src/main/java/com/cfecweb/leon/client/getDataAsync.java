@@ -2,15 +2,15 @@ package com.cfecweb.leon.client;
 
 import java.util.List;
 
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
-import com.cfecweb.leon.dto.GWTfisheryTable;
-import com.cfecweb.leon.dto.ClientPaymentContext;
-import com.cfecweb.leon.dto.PaymentProcessingContextAndFields;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
+import com.cfecweb.leon.client.model.GWTfisheryTable;
+import com.cfecweb.leon.client.model.ClientPaymentContext;
+import com.cfecweb.leon.client.model.PaymentProcessingContextAndFields;
 import com.cfecweb.leon.dto.UserSessionSettings;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

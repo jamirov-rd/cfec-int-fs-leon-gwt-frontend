@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -92,13 +92,13 @@ public class ScreenConfirmation {
                 for (Iterator<ArenewPermits> p = plist.iterator(); p.hasNext();) {
                     ArenewPermits permit = (ArenewPermits) p.next();
                     if (permit.getStatus().equalsIgnoreCase("Available")) {
-                        if (permit.isRenewed()) {
-                            if (permit.isIntend()) {
+                        if (permit.getRenewed()) {
+                            if (permit.getIntend()) {
                                 permit.setIntends("true");
                             } else {
                                 permit.setIntends("false");
                             }
-                            if (permit.isNointend()) {
+                            if (permit.getNointend()) {
                                 permit.setNointends("true");
                             } else {
                                 permit.setNointends("false");
@@ -106,12 +106,12 @@ public class ScreenConfirmation {
                             permit.setStatus("Pending");
                             permit.setNewrenew(true);
                             if (permit.getId().getFishery().equalsIgnoreCase("B 06B") || permit.getId().getFishery().equalsIgnoreCase("B 61B")) {
-                                if (permit.isReducedfee()) {
+                                if (permit.getReducedfee()) {
                                     halred = true;
                                 }
                             } else if (permit.getId().getFishery().equalsIgnoreCase("C 06B") || permit.getId().getFishery().equalsIgnoreCase("C 61B")
                                     || permit.getId().getFishery().equalsIgnoreCase("C 09B") || permit.getId().getFishery().equalsIgnoreCase("C 91B")) {
-                                if (permit.isReducedfee()) {
+                                if (permit.getReducedfee()) {
                                     sabred = true;
                                 }
                             }
@@ -121,7 +121,7 @@ public class ScreenConfirmation {
                 for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
                     ArenewVessels vessel = (ArenewVessels) v.next();
                     if (vessel.getStatus().equalsIgnoreCase("Available")) {
-                        if (vessel.isRenewed()) {
+                        if (vessel.getRenewed()) {
                             vessel.setStatus("Pending");
                             vessel.setNewrenew(true);
                         }
@@ -163,24 +163,24 @@ public class ScreenConfirmation {
 	    	Log.info("permit " + permit.isAlready());
 	    	Log.info("permit " + permit.isNewrenew());
 	    	Log.info(" ");*/
-	    	if (permit.getStatus().equalsIgnoreCase("Available") || permit.isNewrenew()) {
-	    		if (permit.isRenewed()) {
+	    	if (permit.getStatus().equalsIgnoreCase("Available") || permit.getNewrenew()) {
+	    		if (permit.getRenewed()) {
 	    			/*Log.info("fishery 2 " + permit.getId().getFishery());
 	    			Log.info("Halibut? 2 " + permit.isHalibut());
 	    			Log.info("Sablefish? 2 " + permit.isSablefish());
 	    			Log.info("reduced? 2 " + permit.isReducedfee());*/
-	    			if (permit.isIntend()) {
+	    			if (permit.getIntend()) {
 	    				permit.setIntendString("Yes");
 	    			} else {
 	    				permit.setIntendString("No");
 	    			}
 	    			if (permit.getId().getFishery().equalsIgnoreCase("B 06B") || permit.getId().getFishery().equalsIgnoreCase("B 61B")) {
-	    				if (permit.isReducedfee()) {
+	    				if (permit.getReducedfee()) {
 	    					halred = true;
 	    				} 	    				
  	    			} else if (permit.getId().getFishery().equalsIgnoreCase("C 06B") || permit.getId().getFishery().equalsIgnoreCase("C 61B") 
  	    					|| permit.getId().getFishery().equalsIgnoreCase("C 09B") || permit.getId().getFishery().equalsIgnoreCase("C 91B")) {
- 	    				if (permit.isReducedfee()) {
+ 	    				if (permit.getReducedfee()) {
 	    					sabred = true;
 	    				} 
  	    			}
@@ -190,11 +190,11 @@ public class ScreenConfirmation {
 	    }
 	    for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
 	    	ArenewVessels vessel = (ArenewVessels) v.next();
-	    	if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.isNewrenew()) {
+	    	if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.getNewrenew()) {
 	    		Log.info(entity.getId().getCfecid() + " vessel status is " + vessel.getStatus());
-	    		Log.info(entity.getId().getCfecid() + " vessel isNewrenew is " + vessel.isNewrenew());
-	    		Log.info(entity.getId().getCfecid() + " vessel isNewVessel is " + vessel.isNewVessel());
-	    		if (vessel.isRenewed()) {
+	    		Log.info(entity.getId().getCfecid() + " vessel isNewrenew is " + vessel.getNewrenew());
+	    		Log.info(entity.getId().getCfecid() + " vessel isNewVessel is " + vessel.getNewVessel());
+	    		if (vessel.getRenewed()) {
 	    			vfinal.add(vessel);
 	    		}
 	    	}

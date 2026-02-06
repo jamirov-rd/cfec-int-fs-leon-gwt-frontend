@@ -3,12 +3,12 @@ package com.cfecweb.leon.client;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -740,7 +740,7 @@ public class ScreenAddress extends LayoutContainer {
         mr.setLayout(layout4);  
                 
         raddress = new TextField<String>();  
-        if (entity.isForeign()) {
+        if (entity.getForeign()) {
         	raddress.setFieldLabel("Address");
         } else {
         	raddress.setFieldLabel("<span class='boldred12'>*</span> Address");
@@ -806,7 +806,7 @@ public class ScreenAddress extends LayoutContainer {
         left.add(raddress, formData);  
            
         rcity = new TextField<String>();  
-        if (entity.isForeign()) {
+        if (entity.getForeign()) {
         	rcity.setFieldLabel("City");
         } else {
         	rcity.setFieldLabel("<span class='boldred12'>*</span> City");
@@ -840,7 +840,7 @@ public class ScreenAddress extends LayoutContainer {
         middle1.add(rcity, formData);  
        
         rstate = new TextField<String>();  
-        if (entity.isForeign()) {
+        if (entity.getForeign()) {
         	rstate.setFieldLabel("State (2 characters)");
         } else {
         	rstate.setFieldLabel("<span class='boldred12'>*</span> State (2 characters)");
@@ -890,7 +890,7 @@ public class ScreenAddress extends LayoutContainer {
         middle2.add(rstate, formData);
          
         rzip = new TextField<String>();  
-        if (entity.isForeign()) {
+        if (entity.getForeign()) {
         	rzip.setFieldLabel("Zip");
         } else {
         	rzip.setFieldLabel("<span class='boldred12'>*</span> Zip");
@@ -929,7 +929,7 @@ public class ScreenAddress extends LayoutContainer {
         right.add(rzip, formData);    
         
         raddress2 = new TextField<String>();
-        if (entity.isForeign()) {
+        if (entity.getForeign()) {
         	raddress2.setFieldLabel("<span class='boldred12'>*</span> <b>OR</b> Foreign Address (if applicable)");  
         } else {
         	raddress2.setFieldLabel("<b>OR</b> Foreign Address (if applicable)");  

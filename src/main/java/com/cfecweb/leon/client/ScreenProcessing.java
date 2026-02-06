@@ -7,14 +7,14 @@ import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.cfecweb.leon.AppProperties;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
-import com.cfecweb.leon.dto.ClientPaymentContext;
-import com.cfecweb.leon.dto.PaymentProcessingContextAndFields;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
+import com.cfecweb.leon.client.model.ClientPaymentContext;
+import com.cfecweb.leon.client.model.PaymentProcessingContextAndFields;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -125,7 +125,7 @@ public class ScreenProcessing {
 	    DateTimeFormat dtformat = DateTimeFormat.getFormat("yyyy-MM-dd");
 	    for (Iterator vt = vlist.iterator(); vt.hasNext();) {
 	    	ArenewVessels tc = (ArenewVessels) vt.next();
-	    	if (tc.isNewrenew() || tc.isNewVessel()) {
+	    	if (tc.getNewrenew() || tc.getNewVessel()) {
 	    		if (!(tc.getSalmontrollDate() == null)) {
 	    			if (!(tc.getSalmontrollDate().equalsIgnoreCase("N/A"))) {
 	    				if (dtformat.parse(tc.getSalmontrollDate()).before(today)) {
@@ -146,7 +146,7 @@ public class ScreenProcessing {
 	    for (Iterator fp = plist.iterator(); fp.hasNext();) {
 	    	ArenewPermits per = (ArenewPermits) fp.next();
 	    	if (per.getId().getSerial().equalsIgnoreCase("Not Issued")) {
-	    		if (per.isNewpermit()) {
+	    		if (per.getNewpermit()) {
 		    		newpmtb.append(per.getId().getFishery() + "/");
 		    		isnewPmt = true;
 		    	}
@@ -158,7 +158,7 @@ public class ScreenProcessing {
 	    for (Iterator fv = vlist.iterator(); fv.hasNext();) {
 	    	ArenewVessels ves = (ArenewVessels) fv.next();
 	    	if (ves.getId().getAdfg().equalsIgnoreCase("N/A")) {
-				if (ves.isNewrenew()) {
+				if (ves.getNewrenew()) {
 					if (!(ves.getName()==null)) {
 						newvesb.append(ves.getName() + "/");
 					} else {
@@ -168,7 +168,7 @@ public class ScreenProcessing {
 				}
 	    	}
 	    	if (ves.getId().getAdfg().equalsIgnoreCase("N/A")) {
-				if (ves.isNewVessel()) {
+				if (ves.getNewVessel()) {
 					if (!(ves.getName()==null)) {
 						newvesb.append(ves.getName() + "/");
 					} else {
@@ -363,10 +363,10 @@ public class ScreenProcessing {
                 final List<ArenewPermits> plist = clientPaymentContext.getPlist();
                 final List<ArenewVessels> vlist = clientPaymentContext.getVlist();
 
-                final boolean halred = clientPaymentContext.isHalred();
-                final boolean sabred = clientPaymentContext.isSabred();
+                final boolean halred = clientPaymentContext.getHalred();
+                final boolean sabred = clientPaymentContext.getSabred();
                 final FeeTotals feeTotals = clientPaymentContext.getFeeTotals();
-                final boolean firstTime = clientPaymentContext.isFirstTime();
+                final boolean firstTime = clientPaymentContext.getFirstTime();
                 final String ryear = clientPaymentContext.getRyear();
                 final String pmtvesCount = clientPaymentContext.getPmtvesCount();
                 final String topLeftText = clientPaymentContext.getTopLeftText();

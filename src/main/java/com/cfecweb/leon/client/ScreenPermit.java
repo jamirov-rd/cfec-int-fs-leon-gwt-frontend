@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.cfecweb.leon.icons.ClientResources;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -132,8 +132,8 @@ public class ScreenPermit {
 	    				   gcode.equalsIgnoreCase("02") || gcode.equalsIgnoreCase("18") || 
 	    				   gcode.equalsIgnoreCase("23") || gcode.equalsIgnoreCase("99") )) {
 		    			if (permit.getStatus().equalsIgnoreCase("Available")) {
-		    				if (permit.isRenewed()) {
-		    					if (permit.isIntend()) {
+		    				if (permit.getRenewed()) {
+		    					if (permit.getIntend()) {
 		    						icnt = icnt + 1;
 			    					if (permit.getAdfg().equalsIgnoreCase("N/A")) {
 			    						if (permit.getId().getPyear().equalsIgnoreCase(entity.getId().getRyear())) {
@@ -150,8 +150,8 @@ public class ScreenPermit {
 			    							for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
 				    							ArenewVessels vessel = (ArenewVessels) v.next();
 				    					    	if (vessel.getId().getAdfg().equalsIgnoreCase(permit.getAdfg())) {
-				    					    		if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.isNewrenew()) {
-				    					    			if (vessel.isRenewed()) {
+				    					    		if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.getNewrenew()) {
+				    					    			if (vessel.getRenewed()) {
 					    					    			Log.info(entity.getId().getCfecid() + " vessel " + permit.getAdfg() + " exists in current inventory and is set for renewal");
 					    					    			found = true;
 					    					    			inList = true;
@@ -219,8 +219,8 @@ public class ScreenPermit {
 	    				 * still need to check for availability, renewal status and intent
 	    				 */
 	    				if (permit.getStatus().equalsIgnoreCase("Available")) {
-		    				if (permit.isRenewed()) {
-		    					if (permit.isIntend()) {
+		    				if (permit.getRenewed()) {
+		    					if (permit.getIntend()) {
 		    						icnt = icnt + 1;
 		    					}
 		    				}
@@ -275,20 +275,20 @@ public class ScreenPermit {
 						    				entity.setManual(true);
 						    			}
 									}
-									Log.info(entity.getId().getCfecid() + " Remote Pending Vessel(s) on this order? " + entity.isManual());
+									Log.info(entity.getId().getCfecid() + " Remote Pending Vessel(s) on this order? " + entity.getManual());
 									ScreenBilling billing = new ScreenBilling();
 					    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 					    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, vresults, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);
 								}
 							});
 			            } else {
-			            	Log.info(entity.getId().getCfecid() + " Local Pending Vessel(s) on this order? " + entity.isManual());
+			            	Log.info(entity.getId().getCfecid() + " Local Pending Vessel(s) on this order? " + entity.getManual());
 			            	ScreenBilling billing = new ScreenBilling();
 			    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 			    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, plist, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);
 			            }
 	       	    	} else {
-	       	    		Log.info(entity.getId().getCfecid() + " No permit intents on this order? " + entity.isManual());
+	       	    		Log.info(entity.getId().getCfecid() + " No permit intents on this order? " + entity.getManual());
 	       	    		ScreenBilling billing = new ScreenBilling();
 		    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 		    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, plist, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);

@@ -3,12 +3,12 @@ package com.cfecweb.leon.client;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -36,6 +36,9 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
+
+import static com.cfecweb.leon.client.FeeTotalsUtil.getNonResTotal;
+import static com.cfecweb.leon.client.FeeTotalsUtil.getResTotal;
 
 /*
  * The billing screen (class) contains forms to input your basic billing information. Included in this screen now is the
@@ -114,9 +117,9 @@ public class ScreenBilling {
                     statusBar.setHTML("");
                     //gmsg.waitStart("Please Wait", "Validating Billing Information....", "Progress", 250);
                     if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-                        tfee = Double.parseDouble(feeTotals.getResTotal());
+                        tfee = Double.parseDouble(getResTotal(feeTotals));
                     } else {
-                        tfee = Double.parseDouble(feeTotals.getNonResTotal());
+                        tfee = Double.parseDouble(getNonResTotal(feeTotals));
                     }
                     statusBar.setHTML("");
 
@@ -297,7 +300,7 @@ public class ScreenBilling {
 									double shpfee = 28.95;
 									feeTotals.setResShipping(((feeTotals.getResShipping()) + serfee + shpfee));
 									DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
-									DOM.getElementById("rt").setInnerText(feeTotals.getResTotal());
+									DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 								}
 							} else {
 								if (feeTotals.getNonresShipping() == 0.0) {
@@ -305,7 +308,7 @@ public class ScreenBilling {
 									double shpfee = 28.95;
 									feeTotals.setNonresShipping(((feeTotals.getNonresShipping()) + serfee + shpfee));
 									DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
-							        DOM.getElementById("nt").setInnerText(feeTotals.getNonResTotal());
+							        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 								}
 							}
 							first.setEnabled(true);
@@ -320,13 +323,13 @@ public class ScreenBilling {
 							if (feeTotals.getResShipping() > 0.0) {
 								feeTotals.setResShipping(0.0);
 								DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
-								DOM.getElementById("rt").setInnerText(feeTotals.getResTotal());
+								DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 							}
 						} else {
 							if (feeTotals.getNonresShipping() > 0.0) {
 								feeTotals.setNonresShipping(0.0);
 								DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
-						        DOM.getElementById("nt").setInnerText(feeTotals.getNonResTotal());
+						        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 							}
 						}
 						first.setValue(false);

@@ -7,12 +7,12 @@ import java.util.List;
 import com.allen_sauer.gwt.log.client.Log;
 import com.allen_sauer.gwt.log.client.Logger;
 import com.allen_sauer.gwt.log.client.RemoteLogger;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.cfecweb.leon.dto.UserSessionSettings;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -802,7 +802,7 @@ public class OnlineRenewal extends LayoutContainer implements EntryPoint {
 	     				    	    				   topLeftText.append("</table>");
 	     				    	    				   topLeftText.append("<table border='0' width='100%' cellspacing='0'><tr><td height='5'></td></tr></table>");
 	     				    	    				   topLeftText.append("<table border='0' width='100%' cellspacing='0'>");
-	     				    	    				   if (!(entity.isForeign())) {
+	     				    	    				   if (!(entity.getForeign())) {
 	     				    	    					   topLeftText.append("<tr><td align='center'><span class='regred12' id='perm_name'>").append(entity.getXname()).append("</span><br>");
 	     					    	    				   topLeftText.append("<span class='regred12' id='perm_address'>").append(entity.getPaddress()).append("</span><br>");
 	     					    	    				   topLeftText.append("<span class='regred12' id='perm_city'>").append(entity.getPcity()).append("</span>").append(",&nbsp;");
@@ -955,7 +955,7 @@ public class OnlineRenewal extends LayoutContainer implements EntryPoint {
 				     		       	    	}
 			    					   };		    					   
 									   MessageBox box1 = new MessageBox();  					
-									   if (entity.isForeign()) {
+									   if (entity.getForeign()) {
 										   box1.setMinWidth(600);
 										   box1.setButtons(MessageBox.YESNO);
 										   box1.setIcon(MessageBox.INFO);

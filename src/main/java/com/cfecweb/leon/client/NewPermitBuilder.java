@@ -5,11 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewPermitsId;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewPermitsId;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
@@ -70,12 +70,12 @@ public class NewPermitBuilder {
 		if (npListSize < 1) {
 			RpcProxy proxy = new RpcProxy() {
 				public void load(Object loadConfig, final AsyncCallback callback) {
-					service.getfshytable(cfecid.getValue().toString(), entity.getResidency(), entity.getPoverty(), ryear, plist, new AsyncCallback<List<com.cfecweb.leon.dto.GWTfisheryTable>>() {
+					service.getfshytable(cfecid.getValue().toString(), entity.getResidency(), entity.getPoverty(), ryear, plist, new AsyncCallback<List<com.cfecweb.leon.client.model.GWTfisheryTable>>() {
 						public void onFailure(Throwable caught) {
 							statusBar.setHTML("<span class='regred12'>*** We are experiencing technical difficulties ***</span>");
     					    gmsg.alert("New Permit Window Error", inst.getTech(), 350);
 						}
-						public void onSuccess(List<com.cfecweb.leon.dto.GWTfisheryTable> result) {
+						public void onSuccess(List<com.cfecweb.leon.client.model.GWTfisheryTable> result) {
 							statusBar.setHTML("<span class='regblack12'>CFEC Online Renewal Review Section</span>");
 							callback.onSuccess(result);
 						}
@@ -313,7 +313,7 @@ public class NewPermitBuilder {
     	if (plist.size() > 0) {
     		while (x < plist.size()) {
 	    		p.append("<tr><td><span class='regbrown10' title='").append(plist.get(x).getDescription()).append("'>"+plist.get(x).getId().getFishery()+"</span></td>");
-	        	if (plist.get(x).isNewpermit()) {
+	        	if (plist.get(x).getNewpermit()) {
 	        		p.append("<td><span class='regblack10'>Not Issued</span></td>");
 	        		p.append("<td><span class='regblack10'>N/A</span></td>");
 	        	} else {
