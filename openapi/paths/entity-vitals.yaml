@@ -15,12 +15,10 @@ get:
         type: string
     - name: option
       in: query
-      required: true
       schema:
         type: boolean
     - name: poverty
       in: query
-      required: true
       schema:
         type: boolean
   responses:

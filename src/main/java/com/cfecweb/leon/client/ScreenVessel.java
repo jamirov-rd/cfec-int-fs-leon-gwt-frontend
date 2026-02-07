@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.cfecweb.leon.icons.ClientResources;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewChangesId;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewChangesId;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
@@ -56,6 +56,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.HTML;
+
+import static com.cfecweb.leon.client.FeeTotalsUtil.getFeeTotals;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ScreenVessel {
@@ -100,7 +102,7 @@ public class ScreenVessel {
 		feetotalPanel.setAutoHeight(true);
 		feetotalPanel.setHorizontalAlign(HorizontalAlignment.CENTER);
 		feetotalPanel.setStyleAttribute("padding-bottom", "5px");
-		feetotalPanel.addText(feeTotals.getFeeTotals(entity.getResidency()));
+		feetotalPanel.addText(getFeeTotals(feeTotals, entity.getResidency()));
         NavprogressBarPanel.add(next);
         topRight.add(feetotalPanel);
         topRight.add(NavprogressBarPanel);

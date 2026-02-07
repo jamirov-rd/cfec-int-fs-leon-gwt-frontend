@@ -3,12 +3,12 @@ package com.cfecweb.leon.client;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.VerticalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -36,6 +36,11 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
+
+import static com.cfecweb.leon.client.FeeTotalsUtil.getNonResTotal;
+import static com.cfecweb.leon.client.FeeTotalsUtil.getResTotal;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toD;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toI;
 
 /*
  * The billing screen (class) contains forms to input your basic billing information. Included in this screen now is the
@@ -114,9 +119,9 @@ public class ScreenBilling {
                     statusBar.setHTML("");
                     //gmsg.waitStart("Please Wait", "Validating Billing Information....", "Progress", 250);
                     if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-                        tfee = Double.parseDouble(feeTotals.getResTotal());
+                        tfee = Double.parseDouble(getResTotal(feeTotals));
                     } else {
-                        tfee = Double.parseDouble(feeTotals.getNonResTotal());
+                        tfee = Double.parseDouble(getNonResTotal(feeTotals));
                     }
                     statusBar.setHTML("");
 
@@ -183,7 +188,7 @@ public class ScreenBilling {
 
 		bottomLeftVPanel.add(startOver);
 		statusBar.setHTML("<span class='regblack12'>CFEC Online Renewal Billing Information Section</span>");
-		if (feeTotals.getVes() == 0 && feeTotals.getPmt() == 0) {
+		if (toI(feeTotals.getVes()) == 0 && toI(feeTotals.getPmt()) == 0) {
 			next.setEnabled(false);
 			nopmtves = true;
 			/*
@@ -292,20 +297,20 @@ public class ScreenBilling {
 						} else {
 							//Log.info(entity.getId().getCfecid() + " has not entered a foreign address, continue");
 							if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-								if (feeTotals.getResShipping() == 0.0) {
+								if (toD(feeTotals.getResShipping()) == 0.0) {
 									double serfee = 15.00;
 									double shpfee = 28.95;
-									feeTotals.setResShipping(((feeTotals.getResShipping()) + serfee + shpfee));
-									DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
-									DOM.getElementById("rt").setInnerText(feeTotals.getResTotal());
+									feeTotals.setResShipping((toD(feeTotals.getResShipping()) + serfee + shpfee));
+									DOM.getElementById("rs").setInnerText(Double.toString(toD(feeTotals.getResShipping())));
+									DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 								}
 							} else {
-								if (feeTotals.getNonresShipping() == 0.0) {
+								if (toD(feeTotals.getNonresShipping()) == 0.0) {
 									double serfee = 15.00;
 									double shpfee = 28.95;
-									feeTotals.setNonresShipping(((feeTotals.getNonresShipping()) + serfee + shpfee));
-									DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
-							        DOM.getElementById("nt").setInnerText(feeTotals.getNonResTotal());
+									feeTotals.setNonresShipping((toD(feeTotals.getNonresShipping()) + serfee + shpfee));
+									DOM.getElementById("ns").setInnerText(Double.toString(toD(feeTotals.getNonresShipping())));
+							        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 								}
 							}
 							first.setEnabled(true);
@@ -317,16 +322,16 @@ public class ScreenBilling {
 						}
 					} else {
 						if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-							if (feeTotals.getResShipping() > 0.0) {
+							if (toD(feeTotals.getResShipping()) > 0.0) {
 								feeTotals.setResShipping(0.0);
-								DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
-								DOM.getElementById("rt").setInnerText(feeTotals.getResTotal());
+								DOM.getElementById("rs").setInnerText(Double.toString(toD(feeTotals.getResShipping())));
+								DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 							}
 						} else {
-							if (feeTotals.getNonresShipping() > 0.0) {
+							if (toD(feeTotals.getNonresShipping()) > 0.0) {
 								feeTotals.setNonresShipping(0.0);
-								DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
-						        DOM.getElementById("nt").setInnerText(feeTotals.getNonResTotal());
+								DOM.getElementById("ns").setInnerText(Double.toString(toD(feeTotals.getNonresShipping())));
+						        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 							}
 						}
 						first.setValue(false);
@@ -523,7 +528,7 @@ public class ScreenBilling {
 		bottomRight.setHeadingHtml("<span class='boldblack12'>Shipping Information</span>");
 		bottomRight.layout();
 
-		if (feeTotals.getVes() + feeTotals.getPmt() > 0) {
+		if (toI(feeTotals.getVes()) + toI(feeTotals.getPmt()) > 0) {
 			ship.collapse();
 		}
 	}

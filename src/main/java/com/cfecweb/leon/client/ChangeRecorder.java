@@ -3,9 +3,9 @@ package com.cfecweb.leon.client;
 import java.util.Date;
 import java.util.List;
 
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewChangesId;
-import com.cfecweb.leon.dto.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewChangesId;
+import com.cfecweb.leon.client.model.ArenewEntity;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 

@@ -4,12 +4,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.FeeTotals;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.FeeTotals;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

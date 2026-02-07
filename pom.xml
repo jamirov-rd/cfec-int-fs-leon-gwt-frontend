@@ -5,7 +5,7 @@
 	<!-- POM file generated with GWT webAppCreator -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.cfecweb</groupId>
-	<artifactId>leon</artifactId>
+	<artifactId>leon-front</artifactId>
 	<packaging>war</packaging>
 	<version>2023-10-02</version>
 	<name>good luck, move gwt app to MVN</name>
@@ -19,12 +19,6 @@
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!--For hibernate default Dev connection-->
-        <database.password>changeme</database.password>
-        <database.url>jdbc:postgresql://146.63.17.69:5433/leon2</database.url>
-        <database.username>root</database.username>
-
-        <jasper_reports.version>7.0.3</jasper_reports.version>
 		<log4j2.version>2.25.2</log4j2.version>
 	</properties>
 
@@ -41,11 +35,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.8</version>
-        </dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -71,31 +60,6 @@
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>7.2.0.Final</version>
-		</dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-community-dialects</artifactId>
-            <version>7.2.0.Final</version>
-        </dependency>
-			    <!-- Other dependencies -->
-
-	    <!--<dependency>
-	        <groupId>org.codehaus.groovy</groupId>
-	        <artifactId>groovy-all</artifactId>
-	        <version>1.5.5</version> <!- - Use the appropriate version - ->
-	    </dependency>-->
-
-		<!-- Add c3po for hibenate pool sharing -->
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>7.2.0.Final</version>
-        </dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -124,58 +88,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-			<version>4.2.2</version>
-		</dependency>
-
-        <!-- JasperReports Core -->
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-        <!-- Needed when you compile .jrxml at runtime -->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-jdt</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-        <!-- PDF exporter (JR 7.0.x split) -->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-pdf</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-        <!-- Fonts & functions -->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-fonts</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-functions</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-
-        <!-- Groovy expressions -->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-groovy</artifactId>
-            <version>${jasper_reports.version}</version>
-        </dependency>
-
-		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.3.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.Ostermiller</groupId>
-			<artifactId>ostermillerutils</artifactId>
-			<version>1.04.03</version>
 		</dependency>
 
 		<dependency>
@@ -189,99 +104,6 @@
 			<artifactId>gxt-gpl</artifactId>
 			<version>2.3.1a18-gwt210</version>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>pdfbox</artifactId>
-			<version>3.0.6</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>javase</artifactId>
-			<version>3.5.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sf.barcode4j</groupId>
-			<artifactId>barcode4j</artifactId>
-			<version>2.1</version>
-		</dependency>
-
-		<!-- pervasive drivers, they need to be loaded manually, check the doc directory-->
-	
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>pvjdbc2</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>configcli</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>javadti</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>jpscs</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>monitorcli</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>psql</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>pvjdbc2x</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pervasive</groupId>
-			<artifactId>startup</artifactId>
-			<version>9.52</version>
-		</dependency>
-
-		<!--add for local running in tomcat 8.5-->
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.30.2-GA</version> <!-- Use the latest version -->
-    	</dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.6.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.6.3</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -349,7 +171,7 @@
                         <configuration>
                             <generatorName>java</generatorName>
                             <inputSpec>${project.basedir}/openapi/api.yaml</inputSpec>
-                            <output>${project.build.directory}/generated/openapi-client-java</output>
+							<output>${project.build.directory}/generated-sources/openapi</output>
                             <apiPackage>com.cfecweb.leon.client.api</apiPackage>
                             <modelPackage>com.cfecweb.leon.client.model</modelPackage>
                             <invokerPackage>com.cfecweb.leon.client.invoker</invokerPackage>
@@ -360,11 +182,23 @@
                             <configOptions>
                                 <!-- Use Java 11+ HTTP client to avoid extra deps -->
                                 <library>native</library>
-                                <dateLibrary>java8</dateLibrary>
+                                <dateLibrary>legacy</dateLibrary>
                                 <serializationLibrary>jackson</serializationLibrary>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <useJakartaEe>false</useJakartaEe>
+								<!-- Remove toUrlQueryString methods from models to be GWT-friendly -->
+								<supportUrlQuery>false</supportUrlQuery>
+                                <serializableModel>true</serializableModel>
                             </configOptions>
+                            <typeMappings>
+                                <typeMapping>date-time=Date</typeMapping>
+                                <typeMapping>number=double</typeMapping>
+                                <typeMapping>decimal=double</typeMapping>
+                                <typeMapping>integer=int</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>Date=java.util.Date</importMapping>
+                            </importMappings>
                         </configuration>
                     </execution>
                 </executions>
@@ -387,6 +221,36 @@
                     </filesets>
                 </configuration>
             </plugin>
+
+            <!-- Post-process generated models to implement GWT IsSerializable -->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <id>add-isserializable-to-models</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${project.build.directory}/generated-sources/openapi/src/main/java/com/cfecweb/leon/client/model</basedir>
+                            <includes>
+                                <include>**/*.java</include>
+                            </includes>
+                            <regexFlags>DOTALL,MULTILINE</regexFlags>
+                            <replacements>
+                                <replacement>
+                                    <token>public\s+class\s+([A-Za-z0-9_]+)\s+implements\s+([^\\{]+)\{</token>
+                                    <value>public class $1 implements $2, com.google.gwt.user.client.rpc.IsSerializable, com.extjs.gxt.ui.client.data.BeanModelTag {</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 	

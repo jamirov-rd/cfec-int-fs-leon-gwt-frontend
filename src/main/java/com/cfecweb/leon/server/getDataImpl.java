@@ -1,10 +1,7 @@
 package com.cfecweb.leon.server;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,26 +9,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.cfecweb.leon.AppProperties;
-import com.cfecweb.leon.dto.FeeTotals;
-import com.cfecweb.leon.config.HibernateSessionFactoryProvider;
-import com.cfecweb.leon.dto.ClientPaymentContext;
-import com.cfecweb.leon.dto.PaymentProcessingContextAndFields;
+import com.cfecweb.leon.client.api.AppApi;
+import com.cfecweb.leon.client.api.EntitiesApi;
+import com.cfecweb.leon.client.api.FisheryApi;
+import com.cfecweb.leon.client.api.FormsApi;
+import com.cfecweb.leon.client.api.PaymentsApi;
+import com.cfecweb.leon.client.api.PermitsApi;
+import com.cfecweb.leon.client.api.SessionApi;
+import com.cfecweb.leon.client.api.VesselsApi;
+import com.cfecweb.leon.client.invoker.ApiClient;
+import com.cfecweb.leon.client.model.CheckVesselRequest;
+import com.cfecweb.leon.client.model.CreateOrderProcessingPrerequisitesRequest;
+import com.cfecweb.leon.client.model.EmailCommentsRequest;
+import com.cfecweb.leon.client.model.FeeTotals;
+import com.cfecweb.leon.client.model.ClientPaymentContext;
+import com.cfecweb.leon.client.model.GetFisheryTableRequest;
+import com.cfecweb.leon.client.model.PaymentProcessingContextAndFields;
+import com.cfecweb.leon.client.model.ProcessChangeRequest;
+import com.cfecweb.leon.client.model.ProcessOrderRequest;
+import com.cfecweb.leon.client.model.SortPlistRequest;
+import com.cfecweb.leon.client.model.SortVlistRequest;
 import com.cfecweb.leon.dto.UserSessionSettings;
-import com.cfecweb.leon.mappers.ArenewChangesMapper;
-import com.cfecweb.leon.mappers.ArenewEntityMapper;
-import com.cfecweb.leon.mappers.ArenewPermitsMapper;
-import com.cfecweb.leon.mappers.ArenewVesselsMapper;
-import com.cfecweb.leon.mappers.GWTfisheryTableMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import org.hibernate.SessionFactory;
 
 import com.cfecweb.leon.client.getData;
-import com.cfecweb.leon.dto.ArenewChanges;
-import com.cfecweb.leon.dto.ArenewEntity;
-import com.cfecweb.leon.dto.ArenewPayment;
-import com.cfecweb.leon.dto.ArenewPermits;
-import com.cfecweb.leon.dto.ArenewVessels;
-import com.cfecweb.leon.dto.GWTfisheryTable;
+import com.cfecweb.leon.client.model.ArenewChanges;
+import com.cfecweb.leon.client.model.ArenewEntity;
+import com.cfecweb.leon.client.model.ArenewPayment;
+import com.cfecweb.leon.client.model.ArenewPermits;
+import com.cfecweb.leon.client.model.ArenewVessels;
+import com.cfecweb.leon.client.model.GWTfisheryTable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /*
  * This is the server side remote service for RCP calls. I try to keep the methods
@@ -39,36 +48,49 @@ import com.cfecweb.leon.dto.GWTfisheryTable;
  * from the client must go through this file first.
  */
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 public class getDataImpl extends RemoteServiceServlet implements getData {
-	private static final long serialVersionUID = 1L;
-	GetVitals gv = new GetVitals();
-	ProcessOrder go = new ProcessOrder();
-	PervasiveVesCheck pvc = new PervasiveVesCheck();
-	Notify notify = new Notify();
-	public Logging leonLog = new Logging();	
-	private final int timeInMinutes = 20;
-	private static String leonproplocation = "/home/tomcat/properties/leon.properties";
-	//private static String leonproplocation = "C:\\home\\tomcat\\properties\\leonWin.properties";
-		
-	public static Properties leonprop = new Properties();
-		
-	public final SessionFactory fact = HibernateSessionFactoryProvider.getSessionFactory();
-	public getDataImpl() {
-	    try {
-			leonprop.load(new FileInputStream(leonproplocation));
-	        // Printing the properties
-	        System.out.println("Printing leonprop properties:");
-	        for (String key : leonprop.stringPropertyNames()) {
-	            String value = leonprop.getProperty(key);
-	            System.out.println(key + ": " + value);
-	        }
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    private static final Logger LOGGER = LogManager.getLogger(getDataImpl.class);
+
+    private static final ApiClient CLIENT;
+    public static final AppApi APP_API;
+    public static final FisheryApi FISHERY_API;
+    public static final EntitiesApi ENTITIES_API;
+    public static final PaymentsApi PAYMENTS_API;
+    public static final FormsApi FORMS_API;
+    public static final VesselsApi VESSELS_API;
+    public static final PermitsApi PERMITS_API;
+    public static final SessionApi SESSION_API;
+
+    private static final int TIME_IN_MINUTES = 20;
+    private static final String LEON_PROP_LOCATION = "/home/tomcat/properties/leon.properties";
+    public static final Properties LEON_PROP = new Properties();
+
+    static {
+        CLIENT = new ApiClient();
+        //TODO: add config
+        CLIENT.setScheme("http").setHost("worf").setPort(8080).setBasePath("/leon-rest2");
+
+        APP_API = new AppApi(CLIENT);
+        FISHERY_API = new FisheryApi(CLIENT);
+        ENTITIES_API = new EntitiesApi(CLIENT);
+        PAYMENTS_API = new PaymentsApi(CLIENT);
+        FORMS_API = new FormsApi(CLIENT);
+        VESSELS_API = new VesselsApi(CLIENT);
+        PERMITS_API = new PermitsApi(CLIENT);
+        SESSION_API = new SessionApi(CLIENT);
+
+        try {
+            LEON_PROP.load(new FileInputStream(LEON_PROP_LOCATION));
+            // Printing the properties
+            LOGGER.info("Printing leonprop properties:");
+            for (String key : LEON_PROP.stringPropertyNames()) {
+                String value = LEON_PROP.getProperty(key);
+                LOGGER.info("{}: {}", key, value);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error in loading LEON properties", e);
+        }
+    }
 
 	/*
 	 *  Passes CFECID and return list of FisheryTable objects(non-Javadoc)
@@ -76,9 +98,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public List<GWTfisheryTable> getfshytable(String id, String res, String pov, String yr, List<ArenewPermits> pmt) {
-        List<com.cfecweb.leon.shared.ArenewPermits> sPmt = ArenewPermitsMapper.INSTANCE.toSharedList(pmt);
-		List<com.cfecweb.leon.shared.GWTfisheryTable> results = gv.getFisheryTable(id, res, pov, yr, leonLog, sPmt, this);
-		return GWTfisheryTableMapper.INSTANCE.toDtoList(results);
+        try {
+            return FISHERY_API.getFisheryTable(new GetFisheryTableRequest().id(id).res(res).pov(pov).yr(yr).pmt(pmt));
+        } catch (Exception e) {
+            LOGGER.error("Error in getfshytable ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -87,8 +112,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public ArenewEntity getVitals(String id, String ryear, boolean option, boolean poverty) {
-        com.cfecweb.leon.shared.ArenewEntity ent = gv.getAddress(id, ryear, option, poverty, leonLog, this);
-		return ArenewEntityMapper.INSTANCE.toDto(ent);
+        try {
+            return ENTITIES_API.getVitals(id, ryear, option, poverty);
+        } catch (Exception e) {
+            LOGGER.error("Error in getVitals ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
     // Forms prerequisites for order processing using Secure Acceptance Hosted Checkout (CyberSource)
@@ -99,23 +128,28 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
                                                                                 boolean halred, boolean sabred, FeeTotals feeTotals, boolean firstTime, String ryear, String pmtvesCount, String topLeftText,
                                                                                 String captchaToken
                                                                                 ) {
-        HttpServletRequest req = getThreadLocalRequest();
-        return go.createOrderProcessingPrerequisites(ent, pay, chg, this, leonLog, plist, vlist, pclist, vclist,
-                halred, sabred, feeTotals, firstTime, ryear, pmtvesCount, topLeftText, captchaToken, req.getRemoteAddr(), leonprop);
+        try {
+            return PAYMENTS_API.createOrderProcessingPrerequisites(new CreateOrderProcessingPrerequisitesRequest()
+                            .ent(ent).pay(pay).chg(chg).plist(plist).vlist(vlist).pclist(pclist).vclist(vclist)
+                            .halred(halred).sabred(sabred).feeTotals(feeTotals).firstTime(firstTime)
+                            .ryear(ryear).pmtvesCount(pmtvesCount).topLeftText(topLeftText).captchaToken(captchaToken)
+                    );
+        } catch (Exception e) {
+            LOGGER.error("Error in createOrderProcessingPrerequisites ", e);
+            throw new RuntimeException(e);
+        }
     }
 
 	/*
 	 * Passes various LEON objects after final selection and processing button to a method that will complete the DB work and charge the CC, if automatic.
 	 * @see com.cfecweb.leon.client.getData#processOrder(com.cfecweb.leon.shared.ArenewEntity, com.cfecweb.leon.shared.ArenewPayment, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
 	 */
-	@SuppressWarnings("unused")
     @Override
 	public ClientPaymentContext processOrder(String ref) {
         try {
-            return go.finalizeOrder(ref, this, leonLog, leonprop);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            return PAYMENTS_API.processOrder(new ProcessOrderRequest().ref(ref));
+        } catch (Exception e) {
+            LOGGER.error("Error in processOrder ", e);
             throw new RuntimeException(e);
         }
 	}
@@ -126,11 +160,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public List<String> getForms(String id, String ryear) {
-		String thisInFileDir = leonprop.getProperty("LEON.tmpfiledir.Location", "/webapps/tmpfiles/in");
-		String thisOutFileDir = leonprop.getProperty("LEON.hostinfo.OutFileDir", "/leonOut");
-		String thisPrePrintsDir = leonprop.getProperty("LEON.hostinfo.PreprintDir", "/webapps/out/LEON/preprints");
-		List<String> formlinks = gv.getForms(id, ryear, leonLog, this, thisInFileDir, thisOutFileDir, thisPrePrintsDir);
-		return formlinks;
+        try {
+            return FORMS_API.getForms(id, ryear);
+        } catch (Exception e) {
+            LOGGER.error("Error in getForms ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -139,9 +174,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public String processChange(String id, String ryear, List<ArenewChanges> chg) {
-        List<com.cfecweb.leon.shared.ArenewChanges> sChg = ArenewChangesMapper.INSTANCE.toSharedList(chg);
-		String results = go.processChanges(id, ryear, sChg, this, leonLog);
-		return results;
+        try {
+            return ENTITIES_API.processChange(new ProcessChangeRequest().id(id).ryear(ryear).chg(chg));
+        } catch (Exception e) {
+            LOGGER.error("Error in processChange ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -150,7 +188,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public void emailComments(String subject, String body, String to, String from) {
-		notify.sendComments(subject, body, to, from, leonLog, this);
+        try {
+            APP_API.emailComments(new EmailCommentsRequest().subject(subject).body(body).to(to).from(from));
+        } catch (Exception e) {
+            LOGGER.error("Error in emailComments ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -161,34 +204,27 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public UserSessionSettings getUserSessionTimeoutMillis() {
-        UserSessionSettings returnObj = null;
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HttpSession session = request.getSession();
-        String recaptchaSiteKey = AppProperties.get(AppProperties.RECAPTCHA_SITE_KEY);
-        String recaptchaAction = AppProperties.get(AppProperties.RECAPTCHA_ACTION);
 		//HttpSession session = getThreadLocalRequest().getSession(true);
 		if (session.getAttribute("active")!=null) {
-			leonLog.log("session id " + session.getId() + " has been re-activated");
-			session.setMaxInactiveInterval(timeInMinutes * (60 * 1000));
-			/*
-			 * get current renewal year from table file view
-			 */
-			//String renewalYear = gv.getRyear(this);
-			String renewalYear = leonprop.getProperty("LEON.licensing.RevenueYear", "2020");
-			returnObj = new UserSessionSettings(session.getMaxInactiveInterval(), Integer.parseInt(renewalYear), recaptchaSiteKey, recaptchaAction);
+            LOGGER.info("session id {} has been re-activated", session.getId());
+			session.setMaxInactiveInterval(TIME_IN_MINUTES * (60 * 1000));
 		} else {
 			//session = getThreadLocalRequest().getSession();
 			session.setAttribute("active", true);
-			leonLog.log("session id " + session.getId() + " has been activated");
-			session.setMaxInactiveInterval(timeInMinutes * (60 * 1000));
-			/*
-			 * get current renewal year from table file view
-			 */
-			//String renewalYear = gv.getRyear(this);
-			String renewalYear = leonprop.getProperty("LEON.licensing.RevenueYear", "2020");
-			returnObj = new UserSessionSettings(session.getMaxInactiveInterval(), Integer.parseInt(renewalYear), recaptchaSiteKey, recaptchaAction);
+            LOGGER.info("session id {} has been activated", session.getId());
+			session.setMaxInactiveInterval(TIME_IN_MINUTES * (60 * 1000));
 		}
-		return returnObj;
+
+        try {
+            com.cfecweb.leon.client.model.UserSessionSettings result = SESSION_API.getUserSessionTimeoutMillis();
+            return new UserSessionSettings(session.getMaxInactiveInterval(), result.getRenewalYear(),
+                    result.getRecaptchaSiteKey(), result.getRecaptchaAction());
+        } catch (Exception e) {
+            LOGGER.error("Error in getUserSessionTimeoutMillis ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -197,11 +233,16 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public String killSession() {
-		HttpServletRequest request = this.getThreadLocalRequest();
-		HttpSession session = request.getSession();
-		leonLog.log("session id " + session.getId() + " has been invalidated thru inactivity");
-		session.invalidate();
-		return null;
+        try {
+            HttpServletRequest request = this.getThreadLocalRequest();
+            HttpSession session = request.getSession();
+            LOGGER.info("session id {} has been invalidated thru inactivity", session.getId());
+            session.invalidate();
+            return null;
+        } catch (Exception e) {
+            LOGGER.error("Error in killSession ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -210,20 +251,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public List<ArenewPermits> sortPlist(List<ArenewPermits> plist, String poverty) {
-		for (Iterator it = plist.iterator(); it.hasNext();) {
-			ArenewPermits ps = (ArenewPermits) it.next();
-			if (poverty.equalsIgnoreCase("true")) {
-				if (ps.getStatus().equalsIgnoreCase("Available")) {
-					ps.setFee(ps.getPfee());
-					ps.setOfee(ps.getOpfee());
-				} else if (ps.getStatus().equalsIgnoreCase("Waived")) {
-					ps.setFee("0.0");
-					ps.setOfee("0.0");
-				}
-			}
-		}
-		Collections.sort(plist);
-		return plist;
+        try {
+            return PERMITS_API.sortPlist(new SortPlistRequest().plist(plist).poverty(poverty));
+        } catch (Exception e) {
+            LOGGER.error("Error in sortPlist ", e);
+            throw new RuntimeException(e);
+        }
 	}
 	
 	/*
@@ -232,8 +265,12 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public List<ArenewVessels> sortVlist(List<ArenewVessels> vlist) {
-		Collections.sort(vlist);
-		return vlist;
+        try {
+            return VESSELS_API.sortVlist(new SortVlistRequest().vlist(vlist));
+        } catch (Exception e) {
+            LOGGER.error("Error in sortVlist ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
 	/*
@@ -242,31 +279,32 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
 	 */
     @Override
 	public ArenewVessels getsingleVessel(String adfg, String ryear, String cfecid) {
-        com.cfecweb.leon.shared.ArenewVessels ves = gv.getsingleVessel(adfg, ryear, cfecid, leonLog, this);
-		return ArenewVesselsMapper.INSTANCE.toDto(ves);
+        try {
+            return VESSELS_API.getSingleVessel(adfg, ryear, cfecid);
+        } catch (Exception e) {
+            LOGGER.error("Error in getsingleVessel ", e);
+            throw new RuntimeException(e);
+        }
 	}
 	
 	@Override
 	public List<ArenewPermits> checkVessel(List<ArenewPermits> plist, String ryear) {
-		//System.out.println("got to checkVessel getDataImpl, plist size is " + plist.size() + ", year is " + ryear);
-		String btreiveHost = leonprop.getProperty("LEON.hostinfo.Process", "Prod");
-        List<com.cfecweb.leon.shared.ArenewPermits> sPlist = ArenewPermitsMapper.INSTANCE.toSharedList(plist);
-		List<com.cfecweb.leon.shared.ArenewPermits> results = PervasiveVesCheck.getVessel(ryear, sPlist, btreiveHost, this);
-		return ArenewPermitsMapper.INSTANCE.toDtoList(results);
+        try {
+            return VESSELS_API.checkVessel(new CheckVesselRequest().plist(plist).ryear(ryear));
+        } catch (Exception e) {
+            LOGGER.error("Error in checkVessel ", e);
+            throw new RuntimeException(e);
+        }
 	}
 	
 	@Override
 	public String checkCC(ArenewPayment pay) {
-		String results = null;
-		System.out.println("Server side CC validity check prior to final processing");
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
-			results = "error";
-			e.printStackTrace();
-		}
-		results = "good";
-		return results;
+        try {
+            return PAYMENTS_API.checkCC(pay);
+        } catch (Exception e) {
+            LOGGER.error("Error in checkCC ", e);
+            throw new RuntimeException(e);
+        }
 	}
 
     /// Retrieves the application version string that was loaded from the
