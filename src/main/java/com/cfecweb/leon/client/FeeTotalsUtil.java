@@ -4,44 +4,56 @@ import com.cfecweb.leon.client.model.FeeTotals;
 
 /** Contains special methods from removed FeeTotals class */
 public class FeeTotalsUtil {
+    public static int toI(Integer i) {
+        if (i == null) { return 0; } else { return i; }
+    }
+
+    public static double toD(Double d) {
+        if (d == null) { return 0.0; } else { return d; }
+    }
+
+    public static boolean toB(Boolean b) {
+        if (b == null) { return false; } else { return b; }
+    }
+
     public static void vesPlus(FeeTotals feeTotals) {
-        feeTotals.ves(feeTotals.getVes() + 1);
+        feeTotals.ves(toI(feeTotals.getVes()) + 1);
     }
 
     public static void vesMinus(FeeTotals feeTotals) {
-        feeTotals.ves(feeTotals.getVes() - 1);
+        feeTotals.ves(toI(feeTotals.getVes()) - 1);
     }
 
     public static void pmtPlus(FeeTotals feeTotals) {
-        feeTotals.pmt(feeTotals.getPmt() + 1);
+        feeTotals.pmt(toI(feeTotals.getPmt()) + 1);
     }
 
     public static void pmtMinus(FeeTotals feeTotals) {
-        feeTotals.pmt(feeTotals.getPmt() - 1);
+        feeTotals.pmt(toI(feeTotals.getPmt()) - 1);
     }
 
     public static void diffPlusc(FeeTotals feeTotals) {
-        feeTotals.diffc(feeTotals.getDiffc() + 1);
+        feeTotals.diffc(toI(feeTotals.getDiffc()) + 1);
     }
 
     public static void diffMinusc(FeeTotals feeTotals) {
-        feeTotals.diffc(feeTotals.getDiffc() - 1);
+        feeTotals.diffc(toI(feeTotals.getDiffc()) - 1);
     }
 
     public static void diffPlusp(FeeTotals feeTotals) {
-        feeTotals.diffp2(feeTotals.getDiffp() + 1);
+        feeTotals.diffp2(toI(feeTotals.getDiffp()) + 1);
     }
 
     public static void diffMinusp(FeeTotals feeTotals) {
-        feeTotals.diffp(feeTotals.getDiffp() - 1);
+        feeTotals.diffp(toI(feeTotals.getDiffp()) - 1);
     }
 
     public static void diffPlusp2(FeeTotals feeTotals) {
-        feeTotals.diffp2(feeTotals.getDiffp2() + 1);
+        feeTotals.diffp2(toI(feeTotals.getDiffp2()) + 1);
     }
 
     public static void diffMinusp2(FeeTotals feeTotals) {
-        feeTotals.diffp2(feeTotals.getDiffp2() - 1);
+        feeTotals.diffp2(toI(feeTotals.getDiffp2()) - 1);
     }
 
     public static String round(String tot) {
@@ -76,7 +88,7 @@ public class FeeTotalsUtil {
     }
 
     public static String getResTotal(FeeTotals feeTotals) {
-        double restot = (feeTotals.getResFishingPermits() + feeTotals.getResVessels() + feeTotals.getResShipping());
+        double restot = (toD(feeTotals.getResFishingPermits()) + toD(feeTotals.getResVessels()) + toD(feeTotals.getResShipping()));
         String rtot = Double.toString(restot);
         if (rtot.indexOf(".") != -1) {
             rtot = round(rtot);
@@ -85,7 +97,8 @@ public class FeeTotalsUtil {
     }
 
     public static String getNonResTotal(FeeTotals feeTotals) {
-        double nonrestot = (feeTotals.getNonresFishingPermits() + feeTotals.getNonresDifferential() + feeTotals.getNonresVessels() + feeTotals.getNonresShipping());
+        double nonrestot = (toD(feeTotals.getNonresFishingPermits()) + toD(feeTotals.getNonresDifferential())
+                + toD(feeTotals.getNonresVessels()) + toD(feeTotals.getNonresShipping()));
         String ntot = Double.toString(nonrestot);
         if (ntot.indexOf(".") != -1) {
             ntot = round(ntot);
@@ -96,52 +109,28 @@ public class FeeTotalsUtil {
     public static String getFeeTotals(FeeTotals feeTotals, String res) {
         StringBuffer ft = new StringBuffer();
         if (res.equalsIgnoreCase("resident") || res.equalsIgnoreCase("R")) {
-            double restot = (feeTotals.getResFishingPermits() + feeTotals.getResDifferential() + feeTotals.getResVessels() + feeTotals.getResShipping());
+            double restot = (toD(feeTotals.getResFishingPermits()) + toD(feeTotals.getResDifferential())
+                    + toD(feeTotals.getResVessels()) + toD(feeTotals.getResShipping()));
             String rtot = Double.toString(restot);
             ft.append("<table width='100%' border='0' cellspacing='0' align='center'>");
             ft.append("<tr><td class='boldblack12' width='15%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alaska Resident</td>" +
-                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='rfp'><i>"+feeTotals.getResFishingPermits()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='rd'><i>"+feeTotals.getResDifferential()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='rv'><i>"+feeTotals.getResVessels()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='rs'><i>"+feeTotals.getResShipping()+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='rfp'><i>"+toD(feeTotals.getResFishingPermits())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='rd'><i>"+toD(feeTotals.getResDifferential())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='rv'><i>"+toD(feeTotals.getResVessels())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='rs'><i>"+toD(feeTotals.getResShipping())+"</i></span></td>" +
                     "<td align='center' class='regblack12' width='15%'>Total:&nbsp;&nbsp;$<span id='rt'><i>"+rtot+"</i></span></td></tr></table>");
         } else {
-            double nonrestot = (feeTotals.getNonresFishingPermits() + feeTotals.getNonresDifferential() + feeTotals.getNonresVessels() + feeTotals.getNonresShipping());
+            double nonrestot = (toD(feeTotals.getNonresFishingPermits()) + toD(feeTotals.getNonresDifferential())
+                    + toD(feeTotals.getNonresVessels()) + toD(feeTotals.getNonresShipping()));
             String ntot = Double.toString(nonrestot);
             ft.append("<table width='100%' border='0' cellspacing='0' align='center'>");
             ft.append("<tr><td class='boldblack12' width='15%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nonresident</td>" +
-                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='nfp'><i>"+feeTotals.getNonresFishingPermits()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='nd'><i>"+feeTotals.getNonresDifferential()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='nv'><i>"+feeTotals.getNonresVessels()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='ns'><i>"+feeTotals.getNonresShipping()+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='nfp'><i>"+toD(feeTotals.getNonresFishingPermits())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='nd'><i>"+toD(feeTotals.getNonresDifferential())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='nv'><i>"+toD(feeTotals.getNonresVessels())+"</i></span></td>" +
+                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='ns'><i>"+toD(feeTotals.getNonresShipping())+"</i></span></td>" +
                     "<td align='center' class='regblack12' width='15%'>Total:&nbsp;&nbsp;$<span id='nt'><i>"+ntot+"</i></span></td></tr></table>");
         }
         return ft.toString();
     }
-/*
-    public static String getFeeTotals(FeeTotals feeTotals, String res) {
-        StringBuffer ft = new StringBuffer();
-        if (res.equalsIgnoreCase("resident") || res.equalsIgnoreCase("R")) {
-            double restot = (feeTotals.getResFishingPermits() + feeTotals.getResDifferential() + feeTotals.getResVessels() + feeTotals.getResShipping());
-            String rtot = Double.toString(restot);
-            ft.append("<table width='100%' border='0' cellspacing='0' align='center'>");
-            ft.append("<tr><td class='boldblack12' width='15%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alaska Resident</td>" +
-                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='rfp'><i>"+feeTotals.getResFishingPermits()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='rd'><i>"+feeTotals.getResDifferential()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='rv'><i>"+feeTotals.getResVessels()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='rs'><i>"+feeTotals.getResShipping()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='15%'>Total:&nbsp;&nbsp;$<span id='rt'><i>"+rtot+"</i></span></td></tr></table>");
-        } else {
-            double nonrestot = (feeTotals.getNonresFishingPermits() + feeTotals.getNonresDifferential() + feeTotals.getNonresVessels() + feeTotals.getNonresShipping());
-            String ntot = Double.toString(nonrestot);
-            ft.append("<table width='100%' border='0' cellspacing='0' align='center'>");
-            ft.append("<tr><td class='boldblack12' width='15%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nonresident</td>" +
-                    "<td align='center' class='regblack12' width='22%'>Fishing Permits:&nbsp;&nbsp$<span id='nfp'><i>"+feeTotals.getNonresFishingPermits()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='16%'>Non-Res Differential:&nbsp;&nbsp;$<span id='nd'><i>"+feeTotals.getNonresDifferential()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='14%'>Vessels:&nbsp;&nbsp;$<span id='nv'><i>"+feeTotals.getNonresVessels()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='18%'>Shipping:&nbsp;&nbsp;$<span id ='ns'><i>"+feeTotals.getNonresShipping()+"</i></span></td>" +
-                    "<td align='center' class='regblack12' width='15%'>Total:&nbsp;&nbsp;$<span id='nt'><i>"+ntot+"</i></span></td></tr></table>");
-        }
-        return ft.toString();
-    }*/
 }

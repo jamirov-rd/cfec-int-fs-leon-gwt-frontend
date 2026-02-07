@@ -192,8 +192,9 @@
                             </configOptions>
                             <typeMappings>
                                 <typeMapping>date-time=Date</typeMapping>
-                                <typeMapping>number=Double</typeMapping>
-                                <typeMapping>decimal=Double</typeMapping>
+                                <typeMapping>number=double</typeMapping>
+                                <typeMapping>decimal=double</typeMapping>
+                                <typeMapping>integer=int</typeMapping>
                             </typeMappings>
                             <importMappings>
                                 <importMapping>Date=java.util.Date</importMapping>
@@ -220,6 +221,36 @@
                     </filesets>
                 </configuration>
             </plugin>
+
+            <!-- Post-process generated models to implement GWT IsSerializable -->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <id>add-isserializable-to-models</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <basedir>${project.build.directory}/generated-sources/openapi/src/main/java/com/cfecweb/leon/client/model</basedir>
+                            <includes>
+                                <include>**/*.java</include>
+                            </includes>
+                            <regexFlags>DOTALL,MULTILINE</regexFlags>
+                            <replacements>
+                                <replacement>
+                                    <token>public\s+class\s+([A-Za-z0-9_]+)\s+implements\s+([^\\{]+)\{</token>
+                                    <value>public class $1 implements $2, com.google.gwt.user.client.rpc.IsSerializable, com.extjs.gxt.ui.client.data.BeanModelTag {</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 	

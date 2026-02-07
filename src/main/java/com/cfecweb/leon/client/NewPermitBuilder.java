@@ -40,6 +40,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 
+import static com.cfecweb.leon.client.FeeTotalsUtil.toB;
+
 /*
  * This class is called when a person clicks on the Add New Permit button. It retrieves a current fishery table, minus the persons current inventory,
  * and presents a popup box with a selectable grid. If a new permit is selected, I automatically renew the permit and update the fee totals, but I 
@@ -188,7 +190,10 @@ public class NewPermitBuilder {
 				    for (Iterator i = npGrid.getSelectionModel().getSelectedItems().iterator(); i.hasNext(); ) {
 				    	BeanModel newpermit = (BeanModel) i.next();
 				    	ArenewPermits npmt = new ArenewPermits();
-				    	ArenewPermitsId npmtId = new ArenewPermitsId();				    	
+                        // Setting default values for fields that were primitive types in the original ArenewPermits class.
+                        npmt.newpermit(false).renewed(false).povertyfee(false).reducedfee(false).halibut(false)
+                                .sablefish(false).nointend(false).intend(false).already(false).newrenew(false);
+				    	ArenewPermitsId npmtId = new ArenewPermitsId();
 				    	npmtId.setFishery(newpermit.get("fishery").toString());
 				    	npmt.setDescription(newpermit.get("description").toString());
 				    	if (newpermit.get("fishery").toString().trim().equalsIgnoreCase("B 06B") ||
@@ -313,7 +318,7 @@ public class NewPermitBuilder {
     	if (plist.size() > 0) {
     		while (x < plist.size()) {
 	    		p.append("<tr><td><span class='regbrown10' title='").append(plist.get(x).getDescription()).append("'>"+plist.get(x).getId().getFishery()+"</span></td>");
-	        	if (plist.get(x).getNewpermit()) {
+	        	if (toB(plist.get(x).getNewpermit())) {
 	        		p.append("<td><span class='regblack10'>Not Issued</span></td>");
 	        		p.append("<td><span class='regblack10'>N/A</span></td>");
 	        	} else {

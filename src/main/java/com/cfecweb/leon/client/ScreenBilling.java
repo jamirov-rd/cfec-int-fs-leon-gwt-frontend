@@ -39,6 +39,8 @@ import com.google.gwt.user.client.ui.HTML;
 
 import static com.cfecweb.leon.client.FeeTotalsUtil.getNonResTotal;
 import static com.cfecweb.leon.client.FeeTotalsUtil.getResTotal;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toD;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toI;
 
 /*
  * The billing screen (class) contains forms to input your basic billing information. Included in this screen now is the
@@ -186,7 +188,7 @@ public class ScreenBilling {
 
 		bottomLeftVPanel.add(startOver);
 		statusBar.setHTML("<span class='regblack12'>CFEC Online Renewal Billing Information Section</span>");
-		if (feeTotals.getVes() == 0 && feeTotals.getPmt() == 0) {
+		if (toI(feeTotals.getVes()) == 0 && toI(feeTotals.getPmt()) == 0) {
 			next.setEnabled(false);
 			nopmtves = true;
 			/*
@@ -295,19 +297,19 @@ public class ScreenBilling {
 						} else {
 							//Log.info(entity.getId().getCfecid() + " has not entered a foreign address, continue");
 							if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-								if (feeTotals.getResShipping() == 0.0) {
+								if (toD(feeTotals.getResShipping()) == 0.0) {
 									double serfee = 15.00;
 									double shpfee = 28.95;
-									feeTotals.setResShipping(((feeTotals.getResShipping()) + serfee + shpfee));
-									DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
+									feeTotals.setResShipping((toD(feeTotals.getResShipping()) + serfee + shpfee));
+									DOM.getElementById("rs").setInnerText(Double.toString(toD(feeTotals.getResShipping())));
 									DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 								}
 							} else {
-								if (feeTotals.getNonresShipping() == 0.0) {
+								if (toD(feeTotals.getNonresShipping()) == 0.0) {
 									double serfee = 15.00;
 									double shpfee = 28.95;
-									feeTotals.setNonresShipping(((feeTotals.getNonresShipping()) + serfee + shpfee));
-									DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
+									feeTotals.setNonresShipping((toD(feeTotals.getNonresShipping()) + serfee + shpfee));
+									DOM.getElementById("ns").setInnerText(Double.toString(toD(feeTotals.getNonresShipping())));
 							        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 								}
 							}
@@ -320,15 +322,15 @@ public class ScreenBilling {
 						}
 					} else {
 						if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-							if (feeTotals.getResShipping() > 0.0) {
+							if (toD(feeTotals.getResShipping()) > 0.0) {
 								feeTotals.setResShipping(0.0);
-								DOM.getElementById("rs").setInnerText(Double.toString(feeTotals.getResShipping()));
+								DOM.getElementById("rs").setInnerText(Double.toString(toD(feeTotals.getResShipping())));
 								DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 							}
 						} else {
-							if (feeTotals.getNonresShipping() > 0.0) {
+							if (toD(feeTotals.getNonresShipping()) > 0.0) {
 								feeTotals.setNonresShipping(0.0);
-								DOM.getElementById("ns").setInnerText(Double.toString(feeTotals.getNonresShipping()));
+								DOM.getElementById("ns").setInnerText(Double.toString(toD(feeTotals.getNonresShipping())));
 						        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 							}
 						}
@@ -526,7 +528,7 @@ public class ScreenBilling {
 		bottomRight.setHeadingHtml("<span class='boldblack12'>Shipping Information</span>");
 		bottomRight.layout();
 
-		if (feeTotals.getVes() + feeTotals.getPmt() > 0) {
+		if (toI(feeTotals.getVes()) + toI(feeTotals.getPmt()) > 0) {
 			ship.collapse();
 		}
 	}

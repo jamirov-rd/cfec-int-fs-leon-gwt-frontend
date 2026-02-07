@@ -32,6 +32,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 
+import static com.cfecweb.leon.client.FeeTotalsUtil.toB;
+
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ScreenProcessing {
 	InstructionsText gins = new InstructionsText();
@@ -125,7 +127,7 @@ public class ScreenProcessing {
 	    DateTimeFormat dtformat = DateTimeFormat.getFormat("yyyy-MM-dd");
 	    for (Iterator vt = vlist.iterator(); vt.hasNext();) {
 	    	ArenewVessels tc = (ArenewVessels) vt.next();
-	    	if (tc.getNewrenew() || tc.getNewVessel()) {
+	    	if (toB(tc.getNewrenew()) || toB(tc.getNewVessel())) {
 	    		if (!(tc.getSalmontrollDate() == null)) {
 	    			if (!(tc.getSalmontrollDate().equalsIgnoreCase("N/A"))) {
 	    				if (dtformat.parse(tc.getSalmontrollDate()).before(today)) {
@@ -146,7 +148,7 @@ public class ScreenProcessing {
 	    for (Iterator fp = plist.iterator(); fp.hasNext();) {
 	    	ArenewPermits per = (ArenewPermits) fp.next();
 	    	if (per.getId().getSerial().equalsIgnoreCase("Not Issued")) {
-	    		if (per.getNewpermit()) {
+	    		if (toB(per.getNewpermit())) {
 		    		newpmtb.append(per.getId().getFishery() + "/");
 		    		isnewPmt = true;
 		    	}
@@ -158,7 +160,7 @@ public class ScreenProcessing {
 	    for (Iterator fv = vlist.iterator(); fv.hasNext();) {
 	    	ArenewVessels ves = (ArenewVessels) fv.next();
 	    	if (ves.getId().getAdfg().equalsIgnoreCase("N/A")) {
-				if (ves.getNewrenew()) {
+				if (toB(ves.getNewrenew())) {
 					if (!(ves.getName()==null)) {
 						newvesb.append(ves.getName() + "/");
 					} else {
@@ -168,7 +170,7 @@ public class ScreenProcessing {
 				}
 	    	}
 	    	if (ves.getId().getAdfg().equalsIgnoreCase("N/A")) {
-				if (ves.getNewVessel()) {
+				if (toB(ves.getNewVessel())) {
 					if (!(ves.getName()==null)) {
 						newvesb.append(ves.getName() + "/");
 					} else {
@@ -363,10 +365,10 @@ public class ScreenProcessing {
                 final List<ArenewPermits> plist = clientPaymentContext.getPlist();
                 final List<ArenewVessels> vlist = clientPaymentContext.getVlist();
 
-                final boolean halred = clientPaymentContext.getHalred();
-                final boolean sabred = clientPaymentContext.getSabred();
+                final boolean halred = toB(clientPaymentContext.getHalred());
+                final boolean sabred = toB(clientPaymentContext.getSabred());
                 final FeeTotals feeTotals = clientPaymentContext.getFeeTotals();
-                final boolean firstTime = clientPaymentContext.getFirstTime();
+                final boolean firstTime = toB(clientPaymentContext.getFirstTime());
                 final String ryear = clientPaymentContext.getRyear();
                 final String pmtvesCount = clientPaymentContext.getPmtvesCount();
                 final String topLeftText = clientPaymentContext.getTopLeftText();

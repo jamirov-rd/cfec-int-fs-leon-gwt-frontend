@@ -57,6 +57,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import javax.annotation.Nullable;
+
+import static com.cfecweb.leon.client.FeeTotalsUtil.toB;
 //import com.pervasive.pscs.*;
 
 /**
@@ -802,7 +804,7 @@ public class OnlineRenewal extends LayoutContainer implements EntryPoint {
 	     				    	    				   topLeftText.append("</table>");
 	     				    	    				   topLeftText.append("<table border='0' width='100%' cellspacing='0'><tr><td height='5'></td></tr></table>");
 	     				    	    				   topLeftText.append("<table border='0' width='100%' cellspacing='0'>");
-	     				    	    				   if (!(entity.getForeign())) {
+	     				    	    				   if (!(toB(entity.getForeign()))) {
 	     				    	    					   topLeftText.append("<tr><td align='center'><span class='regred12' id='perm_name'>").append(entity.getXname()).append("</span><br>");
 	     					    	    				   topLeftText.append("<span class='regred12' id='perm_address'>").append(entity.getPaddress()).append("</span><br>");
 	     					    	    				   topLeftText.append("<span class='regred12' id='perm_city'>").append(entity.getPcity()).append("</span>").append(",&nbsp;");
@@ -955,7 +957,7 @@ public class OnlineRenewal extends LayoutContainer implements EntryPoint {
 				     		       	    	}
 			    					   };		    					   
 									   MessageBox box1 = new MessageBox();  					
-									   if (entity.getForeign()) {
+									   if (toB(entity.getForeign())) {
 										   box1.setMinWidth(600);
 										   box1.setButtons(MessageBox.YESNO);
 										   box1.setIcon(MessageBox.INFO);

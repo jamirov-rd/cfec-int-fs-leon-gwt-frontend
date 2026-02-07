@@ -39,6 +39,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.HTML;
 
+import static com.cfecweb.leon.client.FeeTotalsUtil.toB;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toD;
+
 /*
  * If the user gets here, they will receive a basic confirmation screen listing the permits/vessels they wish to renew/license with
  * a small text summary including total cost about to be billed. If for whatever reason their credit card does not pass for purposes 
@@ -92,13 +95,13 @@ public class ScreenConfirmation {
                 for (Iterator<ArenewPermits> p = plist.iterator(); p.hasNext();) {
                     ArenewPermits permit = (ArenewPermits) p.next();
                     if (permit.getStatus().equalsIgnoreCase("Available")) {
-                        if (permit.getRenewed()) {
-                            if (permit.getIntend()) {
+                        if (toB(permit.getRenewed())) {
+                            if (toB(permit.getIntend())) {
                                 permit.setIntends("true");
                             } else {
                                 permit.setIntends("false");
                             }
-                            if (permit.getNointend()) {
+                            if (toB(permit.getNointend())) {
                                 permit.setNointends("true");
                             } else {
                                 permit.setNointends("false");
@@ -106,12 +109,12 @@ public class ScreenConfirmation {
                             permit.setStatus("Pending");
                             permit.setNewrenew(true);
                             if (permit.getId().getFishery().equalsIgnoreCase("B 06B") || permit.getId().getFishery().equalsIgnoreCase("B 61B")) {
-                                if (permit.getReducedfee()) {
+                                if (toB(permit.getReducedfee())) {
                                     halred = true;
                                 }
                             } else if (permit.getId().getFishery().equalsIgnoreCase("C 06B") || permit.getId().getFishery().equalsIgnoreCase("C 61B")
                                     || permit.getId().getFishery().equalsIgnoreCase("C 09B") || permit.getId().getFishery().equalsIgnoreCase("C 91B")) {
-                                if (permit.getReducedfee()) {
+                                if (toB(permit.getReducedfee())) {
                                     sabred = true;
                                 }
                             }
@@ -121,7 +124,7 @@ public class ScreenConfirmation {
                 for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
                     ArenewVessels vessel = (ArenewVessels) v.next();
                     if (vessel.getStatus().equalsIgnoreCase("Available")) {
-                        if (vessel.getRenewed()) {
+                        if (toB(vessel.getRenewed())) {
                             vessel.setStatus("Pending");
                             vessel.setNewrenew(true);
                         }
@@ -163,24 +166,24 @@ public class ScreenConfirmation {
 	    	Log.info("permit " + permit.isAlready());
 	    	Log.info("permit " + permit.isNewrenew());
 	    	Log.info(" ");*/
-	    	if (permit.getStatus().equalsIgnoreCase("Available") || permit.getNewrenew()) {
-	    		if (permit.getRenewed()) {
+	    	if (permit.getStatus().equalsIgnoreCase("Available") || toB(permit.getNewrenew())) {
+	    		if (toB(permit.getRenewed())) {
 	    			/*Log.info("fishery 2 " + permit.getId().getFishery());
 	    			Log.info("Halibut? 2 " + permit.isHalibut());
 	    			Log.info("Sablefish? 2 " + permit.isSablefish());
 	    			Log.info("reduced? 2 " + permit.isReducedfee());*/
-	    			if (permit.getIntend()) {
+	    			if (toB(permit.getIntend())) {
 	    				permit.setIntendString("Yes");
 	    			} else {
 	    				permit.setIntendString("No");
 	    			}
 	    			if (permit.getId().getFishery().equalsIgnoreCase("B 06B") || permit.getId().getFishery().equalsIgnoreCase("B 61B")) {
-	    				if (permit.getReducedfee()) {
+	    				if (toB(permit.getReducedfee())) {
 	    					halred = true;
 	    				} 	    				
  	    			} else if (permit.getId().getFishery().equalsIgnoreCase("C 06B") || permit.getId().getFishery().equalsIgnoreCase("C 61B") 
  	    					|| permit.getId().getFishery().equalsIgnoreCase("C 09B") || permit.getId().getFishery().equalsIgnoreCase("C 91B")) {
- 	    				if (permit.getReducedfee()) {
+ 	    				if (toB(permit.getReducedfee())) {
 	    					sabred = true;
 	    				} 
  	    			}
@@ -190,11 +193,11 @@ public class ScreenConfirmation {
 	    }
 	    for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
 	    	ArenewVessels vessel = (ArenewVessels) v.next();
-	    	if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.getNewrenew()) {
+	    	if (vessel.getStatus().equalsIgnoreCase("Available") || toB(vessel.getNewrenew())) {
 	    		Log.info(entity.getId().getCfecid() + " vessel status is " + vessel.getStatus());
-	    		Log.info(entity.getId().getCfecid() + " vessel isNewrenew is " + vessel.getNewrenew());
-	    		Log.info(entity.getId().getCfecid() + " vessel isNewVessel is " + vessel.getNewVessel());
-	    		if (vessel.getRenewed()) {
+	    		Log.info(entity.getId().getCfecid() + " vessel isNewrenew is " + toB(vessel.getNewrenew()));
+	    		Log.info(entity.getId().getCfecid() + " vessel isNewVessel is " + toB(vessel.getNewVessel()));
+	    		if (toB(vessel.getRenewed())) {
 	    			vfinal.add(vessel);
 	    		}
 	    	}
@@ -316,7 +319,7 @@ public class ScreenConfirmation {
 	    if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
 	    	entity.setDiffamount("0.0");	    	
 	    } else {
-	    	entity.setDiffamount(Double.toString(feeTotals.getNonresDifferential()));
+	    	entity.setDiffamount(Double.toString(toD(feeTotals.getNonresDifferential())));
 	    }
         StringBuffer con = new StringBuffer("<center><span class='regblack12'>Pressing the </span><span class='regred12'>Next >></span> " +
                 "<span class='regblack12'>button will redirect you to a secure hosted checkout page to complete your payment for a " +

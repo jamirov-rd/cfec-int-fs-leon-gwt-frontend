@@ -25,6 +25,8 @@ import static com.cfecweb.leon.client.FeeTotalsUtil.getNonResTotal;
 import static com.cfecweb.leon.client.FeeTotalsUtil.getResTotal;
 import static com.cfecweb.leon.client.FeeTotalsUtil.pmtMinus;
 import static com.cfecweb.leon.client.FeeTotalsUtil.pmtPlus;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toD;
+import static com.cfecweb.leon.client.FeeTotalsUtil.toI;
 import static com.cfecweb.leon.client.FeeTotalsUtil.vesMinus;
 import static com.cfecweb.leon.client.FeeTotalsUtil.vesPlus;
 
@@ -55,12 +57,12 @@ public class PmtVesSelectFunctions {
 		 */
 		nves.setRenewed(true);
 		if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-			feeTotals.setResVessels(((feeTotals.getResVessels()) + dfeeo));
-			DOM.getElementById("rv").setInnerText(Double.toString(feeTotals.getResVessels()));
+			feeTotals.setResVessels((toD(feeTotals.getResVessels()) + dfeeo));
+			DOM.getElementById("rv").setInnerText(Double.toString(toD(feeTotals.getResVessels())));
 			DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 		} else {
-			feeTotals.setNonresVessels(((feeTotals.getNonresVessels()) + dfeeo));
-			DOM.getElementById("nv").setInnerText(Double.toString(feeTotals.getNonresVessels()));
+			feeTotals.setNonresVessels((toD(feeTotals.getNonresVessels()) + dfeeo));
+			DOM.getElementById("nv").setInnerText(Double.toString(toD(feeTotals.getNonresVessels())));
 	        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 		}
 	}
@@ -81,12 +83,12 @@ public class PmtVesSelectFunctions {
 				 */
                 vesPlus(feeTotals);
 				if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-					feeTotals.setResVessels(((feeTotals.getResVessels()) + dfeeo));
-					DOM.getElementById("rv").setInnerText(Double.toString(feeTotals.getResVessels()));
+					feeTotals.setResVessels((toD(feeTotals.getResVessels()) + dfeeo));
+					DOM.getElementById("rv").setInnerText(Double.toString(toD(feeTotals.getResVessels())));
 					DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 				} else {
-					feeTotals.setNonresVessels(((feeTotals.getNonresVessels()) + dfeeo));
-					DOM.getElementById("nv").setInnerText(Double.toString(feeTotals.getNonresVessels()));
+					feeTotals.setNonresVessels((toD(feeTotals.getNonresVessels()) + dfeeo));
+					DOM.getElementById("nv").setInnerText(Double.toString(toD(feeTotals.getNonresVessels())));
 			        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 				}
 			} else {
@@ -96,12 +98,12 @@ public class PmtVesSelectFunctions {
 				 */
                 vesMinus(feeTotals);
 				if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-					feeTotals.setResVessels(((feeTotals.getResVessels()) - dfeeo));
-					DOM.getElementById("rv").setInnerText(Double.toString(feeTotals.getResVessels()));
+					feeTotals.setResVessels((toD(feeTotals.getResVessels()) - dfeeo));
+					DOM.getElementById("rv").setInnerText(Double.toString(toD(feeTotals.getResVessels())));
 					DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 				} else {
-					feeTotals.setNonresVessels(((feeTotals.getNonresVessels()) - dfeeo));
-					DOM.getElementById("nv").setInnerText(Double.toString(feeTotals.getNonresVessels()));
+					feeTotals.setNonresVessels((toD(feeTotals.getNonresVessels()) - dfeeo));
+					DOM.getElementById("nv").setInnerText(Double.toString(toD(feeTotals.getNonresVessels())));
 			        DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 				}	
 			}
@@ -134,8 +136,8 @@ public class PmtVesSelectFunctions {
 			/*
 			 *  	is resident
 			 */
-			feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) + dorig));
-			DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+			feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) + dorig));
+			DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 			DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 		} else {
 			/*
@@ -143,13 +145,13 @@ public class PmtVesSelectFunctions {
 			 */
 			if (pyear.equalsIgnoreCase(cyear)) {
                 diffPlusc(feeTotals);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				if (entity.getDifferentialc().equalsIgnoreCase("false")) {
-					if (feeTotals.getDiffc() == 1) {
+					if (toI(feeTotals.getDiffc()) == 1) {
 						payment.setDfee1(entity.getDiffamountcyear());
-			        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffc);
-						DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+			        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffc);
+						DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 			        }
 				}
 			} /*else {
@@ -324,8 +326,8 @@ public class PmtVesSelectFunctions {
 			/*
 			 *  	is resident
 			 */
-			feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) + dorig));
-			DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+			feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) + dorig));
+			DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 			DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 		} else {
 			/*
@@ -336,12 +338,12 @@ public class PmtVesSelectFunctions {
 			 */
 			if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear2)) {
                 diffPlusp2(feeTotals);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				if (entity.getDifferentialp2().equalsIgnoreCase("false")) {
-					if (feeTotals.getDiffp2() == 1) {
-			        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffp2);
-						DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+					if (toI(feeTotals.getDiffp2()) == 1) {
+			        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffp2);
+						DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 			        }
 				}
 			}
@@ -350,13 +352,13 @@ public class PmtVesSelectFunctions {
 			 */
 			if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear1)) {
                 diffPlusp(feeTotals);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				if (entity.getDifferentialp().equalsIgnoreCase("false")) {
-					if (feeTotals.getDiffp() == 1) {
+					if (toI(feeTotals.getDiffp()) == 1) {
 						payment.setDfee2(entity.getDiffamountpyear());
-			        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffp);
-						DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+			        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffp);
+						DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 			        }
 				}
 			}
@@ -365,13 +367,13 @@ public class PmtVesSelectFunctions {
 			 */
 			else if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear)) {
                 diffPlusc(feeTotals);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				if (entity.getDifferentialc().equalsIgnoreCase("false")) {
-					if (feeTotals.getDiffc() == 1) {
+					if (toI(feeTotals.getDiffc()) == 1) {
 						payment.setDfee1(entity.getDiffamountcyear());
-			        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffc);
-						DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+			        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffc);
+						DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 			        }
 				}
 			}			
@@ -434,8 +436,8 @@ public class PmtVesSelectFunctions {
 										 * 	is resident
 										 * 
 										 */
-										feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) + dorig));
-										DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+										feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) + dorig));
+										DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 										DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 									} else {
 										/*
@@ -446,12 +448,12 @@ public class PmtVesSelectFunctions {
 										 */
 										if (store.getAt(y).get("id.pyear").toString().equalsIgnoreCase(cyear2)) {
                                             diffPlusp2(feeTotals);
-											feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-											DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+											feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+											DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 											if (entity.getDifferentialp2().equalsIgnoreCase("false")) {
-												if (feeTotals.getDiffp2() == 1) {
-										        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffp2);
-													DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+												if (toI(feeTotals.getDiffp2()) == 1) {
+										        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffp2);
+													DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 										        }
 											}
 										}
@@ -460,13 +462,13 @@ public class PmtVesSelectFunctions {
 										 */
 										if (store.getAt(y).get("id.pyear").toString().equalsIgnoreCase(cyear1)) {
                                             diffPlusp(feeTotals);
-											feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-											DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+											feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+											DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 											if (entity.getDifferentialp().equalsIgnoreCase("false")) {
-												if (feeTotals.getDiffp() == 1) {
+												if (toI(feeTotals.getDiffp()) == 1) {
 													payment.setDfee2(entity.getDiffamountpyear());
-										        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffp);
-													DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+										        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffp);
+													DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 										        }
 											}
 										} 
@@ -475,13 +477,13 @@ public class PmtVesSelectFunctions {
 										 */
 										else if (store.getAt(y).get("id.pyear").toString().equalsIgnoreCase(cyear)) {
                                             diffPlusc(feeTotals);
-											feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + dorig));
-											DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+											feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + dorig));
+											DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 											if (entity.getDifferentialc().equalsIgnoreCase("false")) {
-												if (feeTotals.getDiffc() == 1) {
+												if (toI(feeTotals.getDiffc()) == 1) {
 													payment.setDfee1(entity.getDiffamountcyear());
-										        	feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() + diffc);
-													DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+										        	feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) + diffc);
+													DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 										        }
 											}
 										}
@@ -561,8 +563,8 @@ public class PmtVesSelectFunctions {
 			 * are they are a resident
 			 */
 			if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
-				feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) - dorig));
-				DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+				feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) - dorig));
+				DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 				DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 			} else {				
 				/*
@@ -573,13 +575,13 @@ public class PmtVesSelectFunctions {
 				 */
 			    if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear)) {
                     diffMinusc(feeTotals);
-					feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) - dorig));
-					DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+					feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) - dorig));
+					DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 					if (entity.getDifferentialc().equalsIgnoreCase("false")) {
-						if (feeTotals.getDiffc() == 0) {
+						if (toI(feeTotals.getDiffc()) == 0) {
 							payment.setDfee1(null);
-							feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() - diffc);
-							DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+							feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) - diffc);
+							DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 						}
 					}
 				}
@@ -588,13 +590,13 @@ public class PmtVesSelectFunctions {
 			     */
 			    else if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear1)) {
                     diffMinusp(feeTotals);
-					feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) - dorig));
-					DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+					feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) - dorig));
+					DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 					if (entity.getDifferentialp().equalsIgnoreCase("false")) {
-						if (feeTotals.getDiffp() == 0) {
+						if (toI(feeTotals.getDiffp()) == 0) {
 							payment.setDfee2(null);
-							feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() - diffp);
-							DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+							feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) - diffp);
+							DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 						}
 					}
 				}
@@ -603,12 +605,12 @@ public class PmtVesSelectFunctions {
 			     */
 			    else if (store.getAt(be.getRowIndex()).get("id.pyear").toString().equalsIgnoreCase(cyear2)) {
                     diffMinusp2(feeTotals);
-					feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) - dorig));
-					DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+					feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) - dorig));
+					DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 					if (entity.getDifferentialp2().equalsIgnoreCase("false")) {
-						if (feeTotals.getDiffp2() == 0) {
-							feeTotals.setNonresDifferential(feeTotals.getNonresDifferential() - diffp2);
-							DOM.getElementById("nd").setInnerText(Double.toString(feeTotals.getNonresDifferential()));	
+						if (toI(feeTotals.getDiffp2()) == 0) {
+							feeTotals.setNonresDifferential(toD(feeTotals.getNonresDifferential()) - diffp2);
+							DOM.getElementById("nd").setInnerText(Double.toString(toD(feeTotals.getNonresDifferential())));
 						}
 					}
 				}
@@ -842,16 +844,16 @@ public class PmtVesSelectFunctions {
 			if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
 				//Log.info("got here selectreduced 3");
 				store.getAt(be.getRowIndex()).set("fee", dred);
-				feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) - ddiff));
-				DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+				feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) - ddiff));
+				DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 				DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 				store.commitChanges();
 				//Log.info("got here selectreduced 4");
 			} else {
 				//Log.info("got here selectreduced 5");
 				store.getAt(be.getRowIndex()).set("fee", dred);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) - ddiff));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) - ddiff));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 				store.commitChanges();
 				//Log.info("got here selectreduced 6");
@@ -897,16 +899,16 @@ public class PmtVesSelectFunctions {
 		if (store.getAt(be.getRowIndex()).get("renewed").toString().equalsIgnoreCase("true")) {
 			if (entity.getResidency().equalsIgnoreCase("resident") || entity.getResidency().equalsIgnoreCase("R")) {
 				store.getAt(be.getRowIndex()).set("fee", dcopy);
-				feeTotals.setResFishingPermits(((feeTotals.getResFishingPermits()) + ddiff));
-				DOM.getElementById("rfp").setInnerText(Double.toString(feeTotals.getResFishingPermits()));
+				feeTotals.setResFishingPermits((toD(feeTotals.getResFishingPermits()) + ddiff));
+				DOM.getElementById("rfp").setInnerText(Double.toString(toD(feeTotals.getResFishingPermits())));
 				DOM.getElementById("rt").setInnerText(getResTotal(feeTotals));
 				//Log.info("got here selectunreduced 6");
 				store.commitChanges();
 				
 			} else {
 				store.getAt(be.getRowIndex()).set("fee", dcopy);
-				feeTotals.setNonresFishingPermits(((feeTotals.getNonresFishingPermits()) + ddiff));
-				DOM.getElementById("nfp").setInnerText(Double.toString(feeTotals.getNonresFishingPermits()));
+				feeTotals.setNonresFishingPermits((toD(feeTotals.getNonresFishingPermits()) + ddiff));
+				DOM.getElementById("nfp").setInnerText(Double.toString(toD(feeTotals.getNonresFishingPermits())));
 				DOM.getElementById("nt").setInnerText(getNonResTotal(feeTotals));
 				store.commitChanges();
 				//Log.info("got here selectunreduced 7");

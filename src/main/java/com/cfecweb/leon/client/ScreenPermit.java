@@ -49,6 +49,8 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 
+import static com.cfecweb.leon.client.FeeTotalsUtil.toB;
+
 @SuppressWarnings({"rawtypes"})
 public class ScreenPermit {
 	InstructionsText gins = new InstructionsText();
@@ -132,8 +134,8 @@ public class ScreenPermit {
 	    				   gcode.equalsIgnoreCase("02") || gcode.equalsIgnoreCase("18") || 
 	    				   gcode.equalsIgnoreCase("23") || gcode.equalsIgnoreCase("99") )) {
 		    			if (permit.getStatus().equalsIgnoreCase("Available")) {
-		    				if (permit.getRenewed()) {
-		    					if (permit.getIntend()) {
+		    				if (toB(permit.getRenewed())) {
+		    					if (toB(permit.getIntend())) {
 		    						icnt = icnt + 1;
 			    					if (permit.getAdfg().equalsIgnoreCase("N/A")) {
 			    						if (permit.getId().getPyear().equalsIgnoreCase(entity.getId().getRyear())) {
@@ -150,8 +152,8 @@ public class ScreenPermit {
 			    							for (Iterator<ArenewVessels> v = vlist.iterator(); v.hasNext();) {
 				    							ArenewVessels vessel = (ArenewVessels) v.next();
 				    					    	if (vessel.getId().getAdfg().equalsIgnoreCase(permit.getAdfg())) {
-				    					    		if (vessel.getStatus().equalsIgnoreCase("Available") || vessel.getNewrenew()) {
-				    					    			if (vessel.getRenewed()) {
+				    					    		if (vessel.getStatus().equalsIgnoreCase("Available") || toB(vessel.getNewrenew())) {
+				    					    			if (toB(vessel.getRenewed())) {
 					    					    			Log.info(entity.getId().getCfecid() + " vessel " + permit.getAdfg() + " exists in current inventory and is set for renewal");
 					    					    			found = true;
 					    					    			inList = true;
@@ -219,8 +221,8 @@ public class ScreenPermit {
 	    				 * still need to check for availability, renewal status and intent
 	    				 */
 	    				if (permit.getStatus().equalsIgnoreCase("Available")) {
-		    				if (permit.getRenewed()) {
-		    					if (permit.getIntend()) {
+		    				if (toB(permit.getRenewed())) {
+		    					if (toB(permit.getIntend())) {
 		    						icnt = icnt + 1;
 		    					}
 		    				}
@@ -275,20 +277,20 @@ public class ScreenPermit {
 						    				entity.setManual(true);
 						    			}
 									}
-									Log.info(entity.getId().getCfecid() + " Remote Pending Vessel(s) on this order? " + entity.getManual());
+									Log.info(entity.getId().getCfecid() + " Remote Pending Vessel(s) on this order? " + toB(entity.getManual()));
 									ScreenBilling billing = new ScreenBilling();
 					    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 					    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, vresults, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);
 								}
 							});
 			            } else {
-			            	Log.info(entity.getId().getCfecid() + " Local Pending Vessel(s) on this order? " + entity.getManual());
+			            	Log.info(entity.getId().getCfecid() + " Local Pending Vessel(s) on this order? " + toB(entity.getManual()));
 			            	ScreenBilling billing = new ScreenBilling();
 			    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 			    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, plist, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);
 			            }
 	       	    	} else {
-	       	    		Log.info(entity.getId().getCfecid() + " No permit intents on this order? " + entity.getManual());
+	       	    		Log.info(entity.getId().getCfecid() + " No permit intents on this order? " + toB(entity.getManual()));
 	       	    		ScreenBilling billing = new ScreenBilling();
 		    			billing.getBilling(bottomLeftVPanel, topLeft, bottomRight, topRight, startOver, cfecid, next, last, statusBar, phrdText, 
 		    				pmtvesCount, NavprogressBarPanel, entity, changeList, feeTotals, service, topLeftText, firstTime, timer, payment, plist, vlist, first, second, nop, ryear, reCaptchaSiteKey, reCaptchaAction);
