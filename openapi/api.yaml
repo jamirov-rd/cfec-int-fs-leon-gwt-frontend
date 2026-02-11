@@ -24,8 +24,6 @@ paths:
     $ref: './paths/comments-email.yaml'
   /session/timeout:
     $ref: './paths/session-timeout.yaml'
-  /session/kill:
-    $ref: './paths/session-kill.yaml'
   /permits/sort:
     $ref: './paths/permits-sort.yaml'
   /vessels/sort:

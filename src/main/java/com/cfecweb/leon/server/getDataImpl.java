@@ -128,11 +128,15 @@ public class getDataImpl extends RemoteServiceServlet implements getData {
                                                                                 boolean halred, boolean sabred, FeeTotals feeTotals, boolean firstTime, String ryear, String pmtvesCount, String topLeftText,
                                                                                 String captchaToken
                                                                                 ) {
+        String remoteAddress;
         try {
+            HttpServletRequest req = getThreadLocalRequest();
+            remoteAddress = req.getRemoteAddr();
             return PAYMENTS_API.createOrderProcessingPrerequisites(new CreateOrderProcessingPrerequisitesRequest()
                             .ent(ent).pay(pay).chg(chg).plist(plist).vlist(vlist).pclist(pclist).vclist(vclist)
                             .halred(halred).sabred(sabred).feeTotals(feeTotals).firstTime(firstTime)
                             .ryear(ryear).pmtvesCount(pmtvesCount).topLeftText(topLeftText).captchaToken(captchaToken)
+                            .remoteAddress(remoteAddress)
                     );
         } catch (Exception e) {
             LOGGER.error("Error in createOrderProcessingPrerequisites ", e);

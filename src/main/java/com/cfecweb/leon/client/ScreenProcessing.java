@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.cfecweb.leon.AppProperties;
 import com.cfecweb.leon.client.model.ArenewChanges;
 import com.cfecweb.leon.client.model.ArenewEntity;
 import com.cfecweb.leon.client.model.ArenewPayment;

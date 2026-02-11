@@ -49,6 +49,8 @@ post:
               type: string
             captchaToken:
               type: string
+            remoteAddress:
+              type: string
   responses:
     '200':
       description: Order processing context
